@@ -3,7 +3,6 @@ use axum::{
     response::{IntoResponse, Response},
     Json
 };
-use lettre::{message, transport::smtp::response::Response};
 use serde::{Deserialize, Serialize};
 use std::{fmt, sync::Arc};
 
@@ -120,3 +119,5 @@ impl fmt::Display for HttpError {
         )
     }
 }
+
+impl std::error::Error for HttpError {}
