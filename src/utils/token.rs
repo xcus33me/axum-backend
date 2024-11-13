@@ -1,4 +1,13 @@
-use axum::http::StatusCode;
+use std::sync::Arc;
+
+use axum::{
+    extract::Request, 
+    http::StatusCode, 
+    response::IntoResponse, 
+    Extension,
+    middleware::Next,
+};
+
 use chrono::{Duration, Utc};
 use jsonwebtoken::{
     decode,
@@ -11,7 +20,7 @@ use jsonwebtoken::{
 };
 use serde::{Deserialize, Serialize};
 
-use crate::error::{ErrorMessage, HttpError};
+use crate::{error::{ErrorMessage, HttpError}, middleware::JWTAuthMiddleware, models::UserRole, AppState};
 
 #[derive(Debug, Serialize, Deserialize)]
 pub struct TokenClaims {
@@ -46,7 +55,7 @@ pub fn create_token(
     )
 }
 
-pub fn decode_token<T: Into<String>(
+pub fn decode_token<T: Into<String>>(
     token: T,
     secret: &[u8],
 ) -> Result<String, HttpError> {
@@ -62,3 +71,22 @@ pub fn decode_token<T: Into<String>(
     }
 }
 
+pub async fn role_check(
+    Extension(_app_state): Extension<Arc<AppState>>,
+    req: Request,
+    next: Next,
+    required_roles: Vec<UserRole>
+) -> Result<impl IntoResponse, HttpError> {
+    let user = req
+        .extensions()
+        .get::<JWTAuthMiddleware>()
+        .ok_or_else(|| {
+            HttpError::unauthorized(ErrorMessage::UserNotAuthenticated.to_string())
+        })?;
+
+    if !required_roles.contains(&user.user.role) {
+        return Err(HttpError::new(ErrorMessage::PermissionDenied.to_string(), StatusCode::FORBIDDEN));
+    }
+
+    Ok(next.run(req).await)
+}
