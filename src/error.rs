@@ -32,6 +32,8 @@ pub enum ErrorMessage {
     TokenNotProvided,
     PermissionDenied,
     UserNotAuthenticated,
+    VerifTokenExpired,
+    InvalidVerifToken
 }
 
 impl ToString for ErrorMessage {
@@ -55,6 +57,8 @@ impl ErrorMessage {
             ErrorMessage::InvalidHashFormat => "Invalid password hash format".to_string(),
             ErrorMessage::InvalidToken => "Authentication token is invalid or expired".to_string(),
             ErrorMessage::PermissionDenied => "You are not allowed to perform this action".to_string(),
+            ErrorMessage::VerifTokenExpired => "Verification token has expired".to_string(),
+            ErrorMessage::InvalidVerifToken => "Invalid verification token".to_string(),
         }
     }
 }
