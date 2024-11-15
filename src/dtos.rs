@@ -158,10 +158,7 @@ pub struct UserPasswordUpdateDto {
 
 #[derive(Debug, Validate, Serialize, Deserialize)]
 pub struct VerifyEmailQueryDto {
-    #[validate(
-        length(min = 1, message = "Token is required"), 
-        email(message = "Email is invalid")
-    )]
+    #[validate(length(min = 1, message = "Token is required"))]
     pub token: String,
 }
 
