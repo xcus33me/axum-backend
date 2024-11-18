@@ -33,7 +33,8 @@ pub enum ErrorMessage {
     PermissionDenied,
     UserNotAuthenticated,
     VerifTokenExpired,
-    InvalidVerifToken
+    InvalidVerifToken,
+    EmailNotFound,
 }
 
 impl ToString for ErrorMessage {
@@ -59,6 +60,7 @@ impl ErrorMessage {
             ErrorMessage::PermissionDenied => "You are not allowed to perform this action".to_string(),
             ErrorMessage::VerifTokenExpired => "Verification token has expired".to_string(),
             ErrorMessage::InvalidVerifToken => "Invalid verification token".to_string(),
+            ErrorMessage::EmailNotFound => "Email not found".to_string()
         }
     }
 }
