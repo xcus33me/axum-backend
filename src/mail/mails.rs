@@ -37,7 +37,7 @@ fn create_verification_link(base_url: &str, token: &str) -> String {
     format!("{}?token={}", base_url, token)
 }
 
-pub async fn send_forgot_password(
+pub async fn send_forgot_password_email(
     to_email: &str,
     reset_link: &str,
     username: &str
