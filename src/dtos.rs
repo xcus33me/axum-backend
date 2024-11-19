@@ -1,6 +1,5 @@
 use core::str;
 use chrono::{DateTime, Utc};
-use lettre::message::header::Date;
 use serde::{Serialize, Deserialize};
 use validator::Validate;
 
@@ -99,7 +98,7 @@ pub struct UserResponseDto {
 #[derive(Debug, Serialize, Deserialize)]
 pub struct UserListResponseDto {
     pub status: String,
-    pub users: FilterUserDto,
+    pub users: Vec<FilterUserDto>,
     pub results: i64,
 }
 
