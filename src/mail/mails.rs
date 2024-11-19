@@ -1,5 +1,4 @@
 use core::error;
-use std::fmt::format;
 
 use super::sender::send_email;
 

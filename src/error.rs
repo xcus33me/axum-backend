@@ -4,7 +4,7 @@ use axum::{
     Json
 };
 use serde::{Deserialize, Serialize};
-use std::{fmt, sync::Arc};
+use std::fmt;
 
 #[derive(Debug, Serialize, Deserialize)]
 pub struct ErrorResponse {
@@ -39,7 +39,7 @@ pub enum ErrorMessage {
 
 impl ToString for ErrorMessage {
     fn to_string(&self) -> String {
-        self.to_string().to_owned()
+        self.to_str().to_owned()
     }
 }
 

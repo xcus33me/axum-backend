@@ -1,6 +1,6 @@
 use std::sync::Arc;
 
-use axum::{extract::Query, http::{header, response, HeaderMap, StatusCode}, response::{IntoResponse, Redirect}, routing::{get, post}, Extension, Json, Router};
+use axum::{extract::Query, http::{header, HeaderMap, StatusCode}, response::{IntoResponse, Redirect}, routing::{get, post}, Extension, Json, Router};
 use axum_extra::extract::cookie::Cookie;
 use chrono::{Utc, Duration};
 use validator::Validate;
@@ -29,7 +29,7 @@ use crate::{
 pub fn auth_handler() -> Router {
     Router::new()
         .route("/register", post(register))
-        .route("login", post(login))
+        .route("/login", post(login))
         .route("/verify", get(verify_email))
         .route("/forgot-password", post(forgot_password))
         .route("/reset-password", post(reset_password))
