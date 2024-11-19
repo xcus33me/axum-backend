@@ -1,9 +1,9 @@
 use std::sync::Arc;
 
-use axum::{extract::Query, http::Response, middleware, response::IntoResponse, routing::{get, put}, Extension, Json, Router};
+use axum::{extract::Query, middleware, response::IntoResponse, routing::{get, put}, Extension, Json, Router};
 use validator::Validate;
 
-use crate::{db::UserExt, dtos::{FilterUserDto, NameUpdateDto, RequestQueryDto, RoleUpdateDto, UserData, UserListResponseDto, UserPasswordUpdateDto, UserResponseDto}, error::{ErrorMessage, HttpError}, middleware::{role_check, JWTAuthMiddleware}, models::{User, UserRole}, utils::password, AppState};
+use crate::{db::UserExt, dtos::{FilterUserDto, NameUpdateDto, RequestQueryDto, Response, RoleUpdateDto, UserData, UserListResponseDto, UserPasswordUpdateDto, UserResponseDto}, error::{ErrorMessage, HttpError}, middleware::{role_check, JWTAuthMiddleware}, models::{User, UserRole}, utils::password, AppState};
 
 pub fn user_handler() -> Router {
     Router::new()
@@ -135,7 +135,7 @@ pub async fn update_user_password(
 
     let user = &user.user;
 
-    let user_id = uuid::Uuid::parse_str(&user.id.to_string())?;
+    let user_id = uuid::Uuid::parse_str(&user.id.to_string()).unwrap();
 
     let result = app_state.db_client
         .get_user(Some(user_id.clone()), None, None, None)
@@ -160,7 +160,7 @@ pub async fn update_user_password(
         .map_err(|e| HttpError::server_error(e.to_string()))?;
 
     let response = Response {
-        message: "Password updated Successfully".to_string(),
+        message: "Password updated successfully.".to_string(),
         status: "success"
     };
 
