@@ -181,7 +181,7 @@ pub async fn verify_email(
         cookie.to_string().parse().unwrap()
     );
 
-    let frontend_url = format!("http://localhost:5173/settings");
+    let frontend_url = format!("http://192.168.1.207:5173/settings");
 
     let redirect = Redirect::to(&frontend_url);
 
@@ -216,7 +216,7 @@ pub async fn forgot_password(
         .await
         .map_err(|e| HttpError::server_error(e.to_string()))?;
 
-    let reset_link = format!("http://localhost:5173/reset-password?token={}", &vertification_token);
+    let reset_link = format!("http://192.168.1.207:5173/reset-password?token={}", &vertification_token);
 
     let sent_email_result = send_forgot_password_email(&user.email, &reset_link, &user.name).await;   
 

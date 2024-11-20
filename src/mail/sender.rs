@@ -12,10 +12,10 @@ pub async fn send_email(
     template_path: &str,
     placeholders: &[(String, String)],
 ) -> Result<(), Box<dyn std::error::Error>> {
-    let smtp_server = env::var("STMP_SERVER")?;
-    let smtp_port: u16 = env::var("STMP_PORT")?.parse()?;
-    let smtp_username = env::var("STMP_USERNAME")?;
-    let smtp_password = env::var("STMP_PASSWORD")?;
+    let smtp_server = env::var("SMTP_SERVER")?;
+    let smtp_port: u16 = env::var("SMTP_PORT")?.parse()?;
+    let smtp_username = env::var("SMTP_USERNAME")?;
+    let smtp_password = env::var("SMTP_PASSWORD")?;
 
     let mut html_template = fs::read_to_string(template_path)?;
 
