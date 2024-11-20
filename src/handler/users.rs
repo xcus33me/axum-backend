@@ -126,12 +126,12 @@ pub async fn update_user_role(
 }
 
 pub async fn update_user_password(
-    Extension(app_state): Extension<AppState>,
+    Extension(app_state): Extension<Arc<AppState>>,
     Extension(user): Extension<JWTAuthMiddleware>,
-    Json(body): Json<UserPasswordUpdateDto>
+    Json(body): Json<UserPasswordUpdateDto>,
 ) -> Result<impl IntoResponse, HttpError> {
     body.validate()
-        .map_err(|e| HttpError::bad_request(e.to_string()))?;
+       .map_err(|e| HttpError::bad_request(e.to_string()))?;
 
     let user = &user.user;
 
@@ -145,10 +145,10 @@ pub async fn update_user_password(
     let user = result.ok_or(HttpError::unauthorized(ErrorMessage::InvalidToken.to_string()))?;
 
     let password_match = password::compare(&body.old_password, &user.password)
-        .map_err(|e| HttpError::server_error(e.to_string()))?;
+            .map_err(|e| HttpError::server_error(e.to_string()))?;
 
     if !password_match {
-        return Err(HttpError::bad_request("Old password is incorrect".to_string()))?;
+        return Err(HttpError::bad_request("Old password is incorrect".to_string()));
     }
 
     let hash_password = password::hash(&body.new_password)
@@ -160,8 +160,8 @@ pub async fn update_user_password(
         .map_err(|e| HttpError::server_error(e.to_string()))?;
 
     let response = Response {
-        message: "Password updated successfully.".to_string(),
-        status: "success"
+        message: "Password updated Successfully".to_string(),
+        status: "success",
     };
 
     Ok(Json(response))
