@@ -106,7 +106,7 @@ impl UserExt for DBClient {
         } else if let Some(token) = token {
             user = sqlx::query_as!(
                 User,
-                r#"SELECT id, name, email, password, verified, created_at, updated_at, verification_token, token_expires_at, role as "role: UserRole" FROM users WHERE email = $1"#,
+                r#"SELECT id, name, email, password, verified, created_at, updated_at, verification_token, token_expires_at, role as "role: UserRole" FROM users WHERE verification_token = $1"#,
                 token,
             ).fetch_optional(&self.pool).await?;
         }
